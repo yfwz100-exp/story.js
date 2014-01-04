@@ -11,6 +11,7 @@
         throw 'ziq.Story is needed.';
     }
     
+    /** Check if the two rectangle area is intersected. */
     function isRectsInterseted(r1, r2) {
         return !((r1.y + r1.h < r2.y) || (r2.y + r2.h < r1.y) || (r1.x + r1.w < r2.x) || (r2.x + r2.w < r1.x));
     }
@@ -46,7 +47,8 @@
         }
         
         /**
-         * Get the context of the 
+         * Get the context created with the scene.
+         * @returns {object}
          */
         scene.getContext = function () {
             return ctx;
@@ -94,6 +96,21 @@
                     }
                 }
             }
+        };
+        
+        /**
+         * Get an arrary of actors around the selected area.
+         * @param {object} rect - the rectangle area(x,y,w,h).
+         * @returns {array}
+         */
+        scene.getActors = function (rect) {
+            var keys = Object.keys(actors), i, results = [];
+            for (i = 0; i < keys.length; i += 1) {
+                if (isRectsInterseted(actors[keys[i]].rect, rect)) {
+                    results.push(actors[keys[i]]);
+                }
+            }
+            return results;
         };
                     
         return scene;

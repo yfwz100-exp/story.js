@@ -32,7 +32,7 @@
          */
         function loop(timestamp) {
             if (timestamp - loop.start > (1000 / story.fps)) {
-                if (seq[cursor]()) {
+                if (seq[cursor](loop.frame += 1)) {
                     story.next();
                 }
                 loop.start = timestamp;
@@ -43,6 +43,7 @@
             }
         }
         loop.start = 0;
+        loop.frame = 0;
 
         /**
          * Add scene function to the story.

@@ -18,12 +18,20 @@
      */
     function Story() {
         var seq = [],
-            story = this,
             handle = false,
             cursor = 0,
             callback = {};
+        
+        /**
+         * The function behind the object.
+         *
+         * @param callback the callback function.
+         */
+        function story(callback) {
+            story.start(callback);
+        }
 
-        this.fps = 60;
+        story.fps = 60;
 
         /**
          * The loop closure to start the story.
@@ -50,7 +58,7 @@
          *
          * @param {function} func the scene function.
          */
-        this.addScene = function (func) {
+        story.addScene = function (func) {
             if (typeof func === 'function') {
                 seq.push(func);
             } else {
@@ -66,7 +74,7 @@
          *
          * @param {function} cb callback function.
          */
-        this.start = function (cb) {
+        story.start = function (cb) {
             handle = true;
             // Start the loop immediately.
             loop(0);
@@ -76,7 +84,7 @@
         /**
          * Move to next Scene.
          */
-        this.nextScene = function () {
+        story.nextScene = function () {
             if (seq.length > cursor + 1) {
                 cursor += 1;
             } else {
@@ -87,7 +95,7 @@
         /**
          * Stop the story and clear the handle of requestAnimationFrame().
          */
-        this.stop = function () {
+        story.stop = function () {
             if (handle) {
                 window.cancelAnimationFrame(handle);
                 handle = false;
@@ -100,8 +108,9 @@
                 callback.finish();
             }
         };
+        
+        return story;
     }
-
 
     namespace.Story = Story;
 }(window));

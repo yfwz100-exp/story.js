@@ -80,6 +80,15 @@
             loop(0);
             callback.finish = cb;
         };
+        
+        /**
+         * Check if the story is started.
+         *
+         * @return {Boolean}
+         */
+        story.isStarted = function () {
+            return handle ? true : false;
+        };
 
         /**
          * Move to next Scene.

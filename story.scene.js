@@ -29,7 +29,7 @@
         /**
          * The implementation of scene function.
          * @function
-         * @param {Number} frame current frame.
+         * @param {Number} frame - current frame.
          */
         function scene(frame) {
             // Traverse the actors and update them.
@@ -38,7 +38,9 @@
             ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
             ctx.restore();
             for (i = 0; i < actors.length; i += 1) {
-                actors[i].object(ctx);
+                if (actors[i] && actors[i].object) {
+                    actors[i].object(ctx);
+                }
             }
             if (callback) {
                 callback(frame);
@@ -76,7 +78,9 @@
         scene.forEach = function (callback) {
             var i;
             for (i = 0; i < actors.length; i += 1) {
-                callback(actors[i].rect, actors[i].object);
+                if (actors[i]) {
+                    callback(actors[i].rect, actors[i].object);
+                }
             }
         };
         
@@ -86,11 +90,13 @@
          * @param actor (optional) the actor.
          */
         scene.removeActor = function (rect, actor) {
-            var i, a, b;
-            for (i = 0; i < actors.length; i += 1) {
-                if (isRectsInterseted(actors[i].rect, rect)) {
-                    if (!actor || actor === actors[i].object) {
-                        delete actors[i];
+            if (rect) {
+                var i, a, b;
+                for (i = 0; i < actors.length; i += 1) {
+                    if (actors[i] && isRectsInterseted(actors[i].rect, rect)) {
+                        if (!actor || actor === actors[i].object) {
+                            delete actors[i];
+                        }
                     }
                 }
             }
